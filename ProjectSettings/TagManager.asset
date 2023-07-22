@@ -8,6 +8,7 @@ TagManager:
   - Hitbox
   - Enemy
   - AttackPoint
+  - RetreatCollider
   layers:
   - Default
   - TransparentFX

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sequence1 : StateMachineBehaviour
+public class RetreatCounter : StateMachineBehaviour
 {
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -19,14 +19,7 @@ public class Sequence1 : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (Enemy.instance.attackSequence == 1) {
-            Enemy.instance.attackSequence = 0;
-            Enemy.instance.anim.SetBool("CanAttack", false);
-			Enemy.instance.canAttack = false;
-            Enemy.instance.canMove = true;
-			Enemy.instance.retreatCount = 4;
-			Enemy.instance.Retreat();
-        }
+        EnemyState.instance.damageCount--; 
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
