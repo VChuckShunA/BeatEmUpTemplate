@@ -6,14 +6,13 @@ public class Hitbox : MonoBehaviour
 {
     // Start is called before the first frame update
     public float damage = 5;
-    void Start()
+    public float buff = 0;
+
+    private void OnTriggerEnter(Collider other)
     {
-        
-    }
-	
-	// Update is called once per frame
-	void Update()
-    {
-        
+        if (other.tag == "RetreatCollider")
+        { 
+            other.GetComponentInParent<EnemyState>().TookDamage(damage+buff);
+        }
     }
 }

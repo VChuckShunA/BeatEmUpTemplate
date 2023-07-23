@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class FlickerSprite : MonoBehaviour
 {
-	public float flickerDuration = 0.01f; // Time in seconds for each flicker interval
-	public float flickerDelay = 0.01f; // Time in seconds between flicker intervals
+	public float flickerDuration = 0.1f; // Time in seconds for each flicker interval
+	public float flickerDelay = 0.5f; // Time in seconds between flicker intervals
 	public float waitTime = 1.0f; // Time to wait before flickering
-	public int flickerCount = 25;// Number of flicker intervals
+	public int flickerCount = 5;// Number of flicker intervals
 
 
 	private SpriteRenderer spriteRenderer;

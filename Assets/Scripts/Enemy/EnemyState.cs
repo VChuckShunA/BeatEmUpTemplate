@@ -9,7 +9,7 @@ using UnityEngine.AI;
 public class EnemyState : MonoBehaviour
 {
     public GameObject spriteObject;
-    UnityEngine.AI.NavMeshAgent navMeshAgent;
+    public UnityEngine.AI.NavMeshAgent navMeshAgent;
     EnemySight enemySight;
     EnemyWalk enemyWalk;
     Animator animator;
@@ -36,8 +36,9 @@ public class EnemyState : MonoBehaviour
     public int retreatCounter = 0;
     public float damageCount = 3;
     [SerializeField] public bool isDead = false;
+    public GameObject retreatObject;
     //Variables for the state machine
-    public enum currentStateEnum { idle = 0, walk = 1, attack = 2, retreat=3,hurt=4 };
+    public enum currentStateEnum { idle = 0, walk = 1, attack = 2, retreat=3,hurt=4,dead=5 };
     public currentStateEnum currentState;
     [SerializeField] private Vector3 wanderTarget;
     [SerializeField] private GameObject retreatPoint; 
@@ -134,6 +135,17 @@ public class EnemyState : MonoBehaviour
                 animator.SetBool("Attack", false);
             }
         }
+        else
+        {
+            navMeshAgent.ResetPath();
+            animator.SetBool("Walk",false);
+            // animator.SetBool("Dead", true);
+            animator.Play("Death");
+            rb.constraints = RigidbodyConstraints.FreezePosition;
+            boxCollider.enabled = false;
+            flickerSprite.StartFlickering();
+            //FindObjectOfType<UIManager>().UpdateHealth(health);
+        }
 
 
         //State machine logic
@@ -210,7 +222,7 @@ public class EnemyState : MonoBehaviour
     {
         if (canSpawnRetreatPoint)
         {
-            Instantiate(retreatPoint, new(wanderTarget.x, -2, wanderTarget.z), Quaternion.identity);
+            retreatObject=Instantiate(retreatPoint, new(wanderTarget.x, -2, wanderTarget.z), Quaternion.identity);
             canSpawnRetreatPoint = false;
         }
         if (enemySight.playerOnRight == true && enemyWalk.facingRight == true)
@@ -232,42 +244,38 @@ public class EnemyState : MonoBehaviour
 
     ///Damnage Logic <summary>
     /// Damnage Logic
-    IEnumerator TookDamage(float damage)
+
+    public void DecrementDamageCounter()
+    {
+        damageCount--;
+    }
+    public void TookDamage(float damage)
     {
         if (!isDead)
         {
-            navMeshAgent.speed = 0;
+            tookDamage = true;
+            navMeshAgent.isStopped = true;
             health -= damage;
+            StartCoroutine(DamageTimer());
             if (health <= 0)
             {
                 isDead = true;
-                animator.SetBool("Dead", true);
-                rb.constraints = RigidbodyConstraints.FreezePosition;
-                boxCollider.enabled = false;
-                flickerSprite.StartFlickering();
-                //FindObjectOfType<UIManager>().UpdateHealth(health);
             }
             else
             {
-                yield return new WaitForSeconds(stunTime);
-                animator.SetBool("Is Hit", false);
-                tookDamage = false;
                 animator.SetTrigger("HitDamage");
+                
+                //animator.SetBool("Is Hit", false);
+                tookDamage = false;
             }
         }
 
        
     }
-    /// </summary>
-    /// <param name="other"></param>
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Hitbox"))
-        {
-            StartCoroutine(TookDamage(other.gameObject.GetComponent<Hitbox>().damage));
-        }
 
-    }
+    IEnumerator DamageTimer() {
 
-    
+        yield return new WaitForSeconds(stunTime);
+}
+     
 }

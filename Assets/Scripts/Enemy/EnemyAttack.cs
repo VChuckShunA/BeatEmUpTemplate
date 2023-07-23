@@ -58,7 +58,7 @@ public class EnemyAttack : MonoBehaviour
     {
         navMeshAgent.ResetPath();
         //animator.SetBool ("Attack", true);
-
+       
         /*//Hitbox 1
         if (attack1HitFrame == currentSprite)
             attackBox1.gameObject.SetActive(true);

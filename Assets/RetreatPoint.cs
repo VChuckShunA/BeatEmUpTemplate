@@ -11,10 +11,13 @@ public class RetreatPoint : MonoBehaviour
         {
             if (other.GetComponentInParent<EnemyState>().isRetreating)
             {
-                other.GetComponentInParent<EnemyState>().isRetreating = false;
-                other.GetComponentInParent<EnemyState>().canSpawnRetreatPoint = true;
-                other.GetComponentInParent<EnemyState>().retreatCounter++;
-                Destroy(gameObject);
+                if(other.GetComponentInParent<EnemyState>().retreatObject==this.gameObject)
+                {
+                    other.GetComponentInParent<EnemyState>().isRetreating = false;
+                    other.GetComponentInParent<EnemyState>().canSpawnRetreatPoint = true;
+                    other.GetComponentInParent<EnemyState>().retreatCounter++;
+                    Destroy(gameObject);
+                }
             }
         }
     }
