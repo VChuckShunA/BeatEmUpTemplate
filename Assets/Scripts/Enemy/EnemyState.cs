@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor;
@@ -84,6 +85,22 @@ public class EnemyState : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(navMeshAgent.isStopped);
+       /* Debug.Log("Condition 1");
+        Debug.Log(
+        tookDamage == false);
+        Debug.Log("Condition 2");
+        Debug.Log(
+                enemySight.playerInSight == true);
+        Debug.Log("Condition 3");
+        Debug.Log(
+                damageCount != 0);
+        Debug.Log("Condition 4");
+        Debug.Log(
+                enemySight.targetDistance < enemAttack.attackRange);
+        Debug.Log("Condition 5");
+        Debug.Log(
+                navMeshAgent.velocity.sqrMagnitude < enemAttack.atackStartDelay);*/
         if (!isDead)
         {
             //Get knocked down
@@ -107,16 +124,17 @@ public class EnemyState : MonoBehaviour
                 enemySight.targetDistance < enemAttack.attackRange &&
                 navMeshAgent.velocity.sqrMagnitude < enemAttack.atackStartDelay)
             {
-                //stats.displayUI = false;
-                animator.SetBool("Walk", false);
-                animator.SetBool("Attack", true);
+                if (enemySight.target)
+                {
+                    //stats.displayUI = false;
+                    animator.SetBool("Walk", false);
+                    animator.SetBool("Attack", true);
+                }
             }
             //Retreat logic
-            else if (damageCount == 0 && retreatCounter != 4 && !isRetreating)
+            else if (damageCount == 0 && retreatCounter != 2 && !isRetreating)
             {
-                animator.SetBool("Attack", false);
-                isRetreating = true;
-                StartCoroutine(Retreat());
+                StartRetreating();
             }
             //walk-animation logic
             else if (knockedDown == false &&
@@ -175,7 +193,7 @@ public class EnemyState : MonoBehaviour
         currentAnimationState = currentStateInfo.fullPathHash;
 
         //Retreat Logic
-        if(retreatCounter==4)
+        if(retreatCounter==2)
         {
             retreatCounter = 0;
             damageCount = 3;
@@ -183,7 +201,12 @@ public class EnemyState : MonoBehaviour
         }
 
     }
-
+    public void StartRetreating()
+    {
+        animator.SetBool("Attack", false);
+        isRetreating = true;
+        StartCoroutine(Retreat());
+    }
     IEnumerator KnockedDown()
     {
         animator.Play("Fall");
@@ -211,10 +234,18 @@ public class EnemyState : MonoBehaviour
 
     IEnumerator Retreat()
     {
-        yield return new WaitForSeconds(0.0f);
+        yield return new WaitForSeconds(0.5f);
         animator.SetBool("Walk", false);
         wanderTarget = GetRandomPointAroundPlayer(enemySight.player.transform.position, wanderRadius);
-        
+        Collider[] colliders = Physics.OverlapSphere(wanderTarget, 3f); // Adjust the radius as needed
+        foreach (Collider collider in colliders)
+        {
+            if (collider.CompareTag("RetreatPoint"))
+            {
+                // Retreat point found nearby, get a new random target
+                wanderTarget = GetRandomPointAroundPlayer(enemySight.player.transform.position, wanderRadius);
+            }
+        }
         Walk(wanderTarget);
     }
 
@@ -233,7 +264,6 @@ public class EnemyState : MonoBehaviour
         {
             enemyWalk.Flip();
         }
-        Debug.Log("Walk");
         navMeshAgent.speed = enemyWalk.enemySpeed; //Assign the enemy speed to the navmesh speed
         enemyWalk.enemyCurrentSpeed = navMeshAgent.velocity.sqrMagnitude;
         navMeshAgent.SetDestination(wanderTarget); // Move to the player's location
@@ -264,9 +294,10 @@ public class EnemyState : MonoBehaviour
             else
             {
                 animator.SetTrigger("HitDamage");
-                
+
                 //animator.SetBool("Is Hit", false);
                 tookDamage = false;
+                navMeshAgent.isStopped = false;
             }
         }
 

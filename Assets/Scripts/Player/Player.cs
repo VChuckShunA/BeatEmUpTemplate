@@ -135,11 +135,22 @@ public class Player : MonoBehaviour
 		speed = walkSpeed;
 	}
 
-	public void TookDamage(int damage) {
+	public void TookDamage(float damage) {
 		if (!isDead) {
-			health -= damage;
-			anim.SetTrigger("HitDamage");
-			//FindObjectOfType<UIManager>().UpdateHealth(health);
-		}
+            health -= damage;
+			if (health > 0)
+			{
+				anim.SetTrigger("Hurt");
+				//FindObjectOfType<UIManager>().UpdateHealth(health);
+			}
+			else if (health <= 0)
+			{
+				anim.SetBool("Dead", true);
+				isDead = true;
+			}
+        }
 	}
+
+
+
 }

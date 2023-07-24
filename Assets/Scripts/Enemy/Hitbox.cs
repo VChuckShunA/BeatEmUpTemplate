@@ -14,5 +14,9 @@ public class Hitbox : MonoBehaviour
         { 
             other.GetComponentInParent<EnemyState>().TookDamage(damage+buff);
         }
+        if (other.tag == "Player")
+        {
+            other.GetComponent<Player>().TookDamage(damage + buff);
+        }
     }
 }

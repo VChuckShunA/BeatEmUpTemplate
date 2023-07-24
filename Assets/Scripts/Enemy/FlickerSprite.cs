@@ -12,10 +12,12 @@ public class FlickerSprite : MonoBehaviour
 
 	private SpriteRenderer spriteRenderer;
 	private bool isFlickering = false;
-
+	private EnemyState enemyState;
 	private void Start() {
 		spriteRenderer = GetComponent<SpriteRenderer>();
-	}
+        enemyState=GetComponent<EnemyState>();
+
+    }
 
 	public void StartFlickering() {
 		if (!isFlickering) {
@@ -36,7 +38,10 @@ public class FlickerSprite : MonoBehaviour
 		}
 
 		isFlickering = false;
-
+		if (enemyState.retreatObject)
+        {
+            Destroy(enemyState.retreatObject);
+        }
 		Destroy(this.gameObject);
 	}
 }

@@ -57,9 +57,7 @@ public class EnemyWalk : MonoBehaviour
 		} else if (enemySight.playerInSight != true) 
 		{
 			animator.SetBool ("Walk",false);//stop the animation
-		}
-
-*/
+		}*/
 
 		
 	}
@@ -75,10 +73,14 @@ public class EnemyWalk : MonoBehaviour
 
 		navMeshAgent.speed = enemySpeed; //Assign the enemy speed to the navmesh speed
 		enemyCurrentSpeed=navMeshAgent.velocity.sqrMagnitude;
-		navMeshAgent.SetDestination (enemySight.target.transform.position); // Move to the player's location
-		navMeshAgent.updateRotation = false; //prevent the enemy sprite from rotating
+		if (enemySight.target)
+		{
 
-	}
+            navMeshAgent.SetDestination(enemySight.target.transform.position); // Move to the player's location
+            navMeshAgent.updateRotation = false; //prevent the enemy sprite from rotating
+
+        }
+    }
 
 	void Stop()
 	{

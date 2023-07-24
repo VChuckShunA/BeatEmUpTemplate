@@ -10,7 +10,9 @@ public class EnemySight : MonoBehaviour
 	public float targetDistance;//target distance
 
 	public GameObject player; //Game object to identify the player
+	public bool targetsAvailable;
 
+	private EnemyState enemyState;
 
 	//Variables to to check if the player is on the left or the right of the enemy
 	 Vector3 playerRelativePosition; //use to actually calculate left or right
@@ -27,9 +29,9 @@ public class EnemySight : MonoBehaviour
 	void Awake () 
 	{
 		player = GameObject.FindGameObjectWithTag ("Player"); //Find Game object tagged as player
-
-		//Finding Front and Back Targets
-		frontTarget=GameObject.Find("AttackPointR");
+        enemyState=GetComponent<EnemyState> ();	
+        //Finding Front and Back Targets
+        frontTarget =GameObject.Find("AttackPointR");
 		backTarget=GameObject.Find("AttackPointL");
 		
 	}
@@ -37,8 +39,13 @@ public class EnemySight : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		
-
+        if (!frontTarget.GetComponent<AttackPoint>().available && !backTarget.GetComponent<AttackPoint>().available)
+		{
+			targetsAvailable = false;
+		}
+		else { 
+			targetsAvailable=true;
+		}
 		//Player relative position
 		playerRelativePosition = player.transform.position-gameObject.transform.position;//relative position=player position - enemy position
 
@@ -55,15 +62,33 @@ public class EnemySight : MonoBehaviour
 		distanceToFrontTarget=Vector3.Distance(frontTarget.transform.position,gameObject.transform.position);
 		distanceToBackTarget=Vector3.Distance(backTarget.transform.position,gameObject.transform.position);
 		//compare distances
-		if (distanceToFrontTarget < distanceToBackTarget)
-			target = frontTarget;
-		else if (distanceToFrontTarget > distanceToBackTarget)
-			target = backTarget;
+		if (targetsAvailable)
+		{
+			if (distanceToFrontTarget < distanceToBackTarget && frontTarget.GetComponent<AttackPoint>().available)
+			{
+				target = frontTarget;
+
+				//calculat target distance
+				targetDistance = Vector3.Distance(target.transform.position, gameObject.transform.position);
+			}
+			else if (distanceToFrontTarget > distanceToBackTarget && backTarget.GetComponent<AttackPoint>().available)
+			{
+				target = backTarget;
+
+				//calculat target distance
+				targetDistance = Vector3.Distance(target.transform.position, gameObject.transform.position);
+			}
+
+		}
+		else {
+			target = null;
+			targetDistance = 0;
+        }
 		
-		//calculat target distance
-		targetDistance=Vector3.Distance(target.transform.position,gameObject.transform.position);
 
 	}
+
+
 
 	//Check to see if the player has entered the sphere with the trigger enabled
 	void OnTriggerStay(Collider other)//Checking for the enemy sphere colliders trigger
