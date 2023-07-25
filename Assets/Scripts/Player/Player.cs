@@ -21,8 +21,10 @@ public class Player : MonoBehaviour
 	[SerializeField] public bool canMove = true;
 	[SerializeField] public bool attacked = false;
 	[SerializeField] private Transform groundCheck; // Make sure that the Groundcheck object is slightly below the player (about -0.37)
-
-	private BoxCollider boxCollider;
+    [SerializeField]public float knockBackForce;
+    public bool knockedDown;
+    public float knockedDownTime;
+    private BoxCollider boxCollider;
 	private void Awake() {
 		instance = this;
 	}
@@ -34,7 +36,8 @@ public class Player : MonoBehaviour
 		health = Mathf.Clamp(maxHealth,0,maxHealth);
         anim = GetComponent<Animator>();
 		rb = GetComponent<Rigidbody>();
-	}
+
+    }
 
     // Update is called once per frame
     void Update()
@@ -52,7 +55,11 @@ public class Player : MonoBehaviour
 		Attack();
 
 		Movement();
-	}
+
+        if (knockedDown == true)
+            StartCoroutine(KnockedDown());
+
+    }
 
 
 	private void OnCollisionEnter(Collision collision) {
@@ -136,10 +143,14 @@ public class Player : MonoBehaviour
 	}
 
 	public void TookDamage(float damage) {
-		if (!isDead) {
+		if (!isDead && knockedDown == false) {
             health -= damage;
 			if (health > 0)
 			{
+				if (knockedDown)
+				{ 
+				
+				}
 				anim.SetTrigger("Hurt");
 				//FindObjectOfType<UIManager>().UpdateHealth(health);
 			}
@@ -151,6 +162,34 @@ public class Player : MonoBehaviour
         }
 	}
 
+    public IEnumerator KnockedDown()
+    {
+        health -= 30;
+        anim.Play("Fall");//skip the animator and directly play the flal animation
+        anim.SetBool("Knocked Down", true);
+        canMove = false; // prevent the  sprite from flipping when down
+		canAttack = false;
+		//Getting knocked bakwards
+		if (facingRight == false)
+		{
+			rb.AddForce(transform.right * knockBackForce); //applying a force through the inspector
+			Debug.Log("applied force");
+		}
+		else if (facingRight == true)
+		{
+            rb.AddForce(transform.right * (-1 * knockBackForce));// appying a force of through the inspector
+
+            Debug.Log("applied force");
+        }
+		
+        yield return new WaitForSeconds(knockedDownTime); //waiting for two seconds as specified through the inspector
+
+        anim.SetBool("Knocked Down", false);
+        //animator.Play ("Blaze Idle"); //skipping animator control and returning to idle
+        canMove = true; //allowing the player to flip
+        knockedDown = false;
+		canAttack = true;
+    }
 
 
 }

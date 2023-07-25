@@ -68,6 +68,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 30
   buff: 0
+  knockDownAttack: 0
 --- !u!1 &1093127321972547904
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,6 +239,9 @@ MonoBehaviour:
   canMove: 1
   attacked: 0
   groundCheck: {fileID: 6377867730661040134}
+  knockBackForce: 1
+  knockedDown: 0
+  knockedDownTime: 1
 --- !u!95 &7877513124906854106
 Animator:
   serializedVersion: 5
@@ -447,6 +451,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   buff: 0
+  knockDownAttack: 0
 --- !u!1 &6584269754793917778
 GameObject:
   m_ObjectHideFlags: 0
@@ -515,6 +520,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   buff: 0
+  knockDownAttack: 0
 --- !u!1 &8779220733859976119
 GameObject:
   m_ObjectHideFlags: 0

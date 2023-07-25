@@ -13,8 +13,9 @@ public class EnemyState : MonoBehaviour
     public UnityEngine.AI.NavMeshAgent navMeshAgent;
     EnemySight enemySight;
     EnemyWalk enemyWalk;
-    Animator animator;
+    public Animator animator;
     EnemyAttack enemAttack;
+    EnemyRetreat enemyRetreat;
     Stats stats; // we are using this to update the enemy health HUD , we only want the enemy we are fighting right nowt to have their health displayed.
     //Player Health
     [SerializeField] FlickerSprite flickerSprite;
@@ -42,7 +43,7 @@ public class EnemyState : MonoBehaviour
     public enum currentStateEnum { idle = 0, walk = 1, attack = 2, retreat=3,hurt=4,dead=5 };
     public currentStateEnum currentState;
     [SerializeField] private Vector3 wanderTarget;
-    [SerializeField] private GameObject retreatPoint; 
+    [SerializeField] public GameObject retreatPoint; 
     private float wanderRadius = 8f; // Maximum distance from the player to wander
     //--Annimator State Variables------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     AnimatorStateInfo currentStateInfo;
@@ -65,6 +66,7 @@ public class EnemyState : MonoBehaviour
         enemySight = GetComponent<EnemySight>();
         enemyWalk = GetComponent<EnemyWalk>();
         enemAttack = GetComponent<EnemyAttack>();
+        enemyRetreat = GetComponent<EnemyRetreat>();
         animator = spriteObject.GetComponent<Animator>();
         instance=this;
 
@@ -85,7 +87,6 @@ public class EnemyState : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(navMeshAgent.isStopped);
        /* Debug.Log("Condition 1");
         Debug.Log(
         tookDamage == false);
@@ -119,22 +120,20 @@ public class EnemyState : MonoBehaviour
             //attack logic
             else if (tookDamage == false &&
                 enemySight.playerInSight == true &&
-                damageCount != 0 &&
-                //enemySight.player.GetComponent<PlayerControllerScript>().knockedDown == false &&
+                damageCount > 0 &&
+                enemySight.player.GetComponent<Player>().knockedDown == false &&
                 enemySight.targetDistance < enemAttack.attackRange &&
-                navMeshAgent.velocity.sqrMagnitude < enemAttack.atackStartDelay)
+                navMeshAgent.velocity.sqrMagnitude < enemAttack.atackStartDelay &&
+                enemySight.target
+                )
             {
-                if (enemySight.target)
-                {
-                    //stats.displayUI = false;
-                    animator.SetBool("Walk", false);
-                    animator.SetBool("Attack", true);
-                }
+                
+                    StartCoroutine(AttackDelay());
             }
             //Retreat logic
             else if (damageCount == 0 && retreatCounter != 2 && !isRetreating)
             {
-                StartRetreating();
+                enemyRetreat.StartRetreating();
             }
             //walk-animation logic
             else if (knockedDown == false &&
@@ -179,7 +178,7 @@ public class EnemyState : MonoBehaviour
         {
             currentState = currentStateEnum.walk;
         }
-        else if (currentAnimationState == attack1State)
+        else if (currentAnimationState == attack1State || currentAnimationState == attack2State || currentAnimationState == attack3State)
         {
             currentState = currentStateEnum.attack;
         }
@@ -201,76 +200,42 @@ public class EnemyState : MonoBehaviour
         }
 
     }
-    public void StartRetreating()
+
+    IEnumerator AttackDelay()
     {
-        animator.SetBool("Attack", false);
-        isRetreating = true;
-        StartCoroutine(Retreat());
+        yield return new WaitForSeconds(0);
+        //stats.displayUI = false;
+        animator.SetBool("Walk", false);
+        animator.SetBool("Attack", true);
     }
+    
+   
+    /// <summary>
+    /// Knockdown Logic
+    /// </summary>
+    /// <returns></returns>
+
     IEnumerator KnockedDown()
     {
         animator.Play("Fall");
+        //Getting knocked bakwards
+        if (enemyWalk.facingRight == false)
+        {
+            rb.AddForce(transform.right * 2); //applying a force through the inspector
+            Debug.Log("applied force to enemy");
+        }
+        else if (enemyWalk.facingRight == true)
+        {
+            rb.AddForce(transform.right * (-1 * 2));// appying a force of through the inspector
 
+            Debug.Log("applied force to enemy");
+        }
         yield return new WaitForSeconds(knockDownTime);
         animator.SetBool("Knocked Down", false);
         knockedDown = false;
     }
 
-    private Vector3 GetRandomPointAroundPlayer(Vector3 center, float radius)
-    {
-        Vector3 randomDirection = Random.insideUnitSphere * radius;
-        randomDirection.y = 0f;
-        Vector3 randomPoint = center + randomDirection;
-
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPoint, out hit, radius, NavMesh.AllAreas))
-        {
-            return hit.position;
-        }
-
-        // If no valid position is found, return the original center position
-        return center;
-    }
-
-    IEnumerator Retreat()
-    {
-        yield return new WaitForSeconds(0.5f);
-        animator.SetBool("Walk", false);
-        wanderTarget = GetRandomPointAroundPlayer(enemySight.player.transform.position, wanderRadius);
-        Collider[] colliders = Physics.OverlapSphere(wanderTarget, 3f); // Adjust the radius as needed
-        foreach (Collider collider in colliders)
-        {
-            if (collider.CompareTag("RetreatPoint"))
-            {
-                // Retreat point found nearby, get a new random target
-                wanderTarget = GetRandomPointAroundPlayer(enemySight.player.transform.position, wanderRadius);
-            }
-        }
-        Walk(wanderTarget);
-    }
-
-    void Walk(Vector3 wanderTarget)
-    {
-        if (canSpawnRetreatPoint)
-        {
-            retreatObject=Instantiate(retreatPoint, new(wanderTarget.x, -2, wanderTarget.z), Quaternion.identity);
-            canSpawnRetreatPoint = false;
-        }
-        if (enemySight.playerOnRight == true && enemyWalk.facingRight == true)
-        {
-            enemyWalk.Flip();
-        }
-        else if (enemySight.playerOnRight == false && !enemyWalk.facingRight)
-        {
-            enemyWalk.Flip();
-        }
-        navMeshAgent.speed = enemyWalk.enemySpeed; //Assign the enemy speed to the navmesh speed
-        enemyWalk.enemyCurrentSpeed = navMeshAgent.velocity.sqrMagnitude;
-        navMeshAgent.SetDestination(wanderTarget); // Move to the player's location
-        navMeshAgent.updateRotation = false; //prevent the enemy sprite from rotating
-       
-
-    }
+   
 
     ///Damnage Logic <summary>
     /// Damnage Logic
