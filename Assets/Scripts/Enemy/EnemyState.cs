@@ -35,6 +35,7 @@ public class EnemyState : MonoBehaviour
 
     public bool isRetreating = false;
     public bool canSpawnRetreatPoint = true;
+    public bool canAttack = true;
     public int retreatCounter = 0;
     public float damageCount = 3;
     [SerializeField] public bool isDead = false;
@@ -124,11 +125,14 @@ public class EnemyState : MonoBehaviour
                 enemySight.player.GetComponent<Player>().knockedDown == false &&
                 enemySight.targetDistance < enemAttack.attackRange &&
                 navMeshAgent.velocity.sqrMagnitude < enemAttack.atackStartDelay &&
-                enemySight.target
-                )
+                enemySight.target)
             {
-                
+                if (canAttack)
+                {
+                    canAttack = false;
+                    animator.SetBool("Walk", false);
                     StartCoroutine(AttackDelay());
+                }
             }
             //Retreat logic
             else if (damageCount == 0 && retreatCounter != 2 && !isRetreating)
@@ -197,16 +201,17 @@ public class EnemyState : MonoBehaviour
             retreatCounter = 0;
             damageCount = 3;
             isRetreating = false;
+            canAttack = true;
         }
 
     }
 
     IEnumerator AttackDelay()
     {
-        yield return new WaitForSeconds(0);
+        yield return new WaitForSeconds(1);
         //stats.displayUI = false;
-        animator.SetBool("Walk", false);
         animator.SetBool("Attack", true);
+        Debug.Log("AttackDelay");
     }
     
    
@@ -252,26 +257,22 @@ public class EnemyState : MonoBehaviour
             navMeshAgent.isStopped = true;
             health -= damage;
             StartCoroutine(DamageTimer());
-            if (health <= 0)
-            {
-                isDead = true;
-            }
-            else
-            {
-                animator.SetTrigger("HitDamage");
-
-                //animator.SetBool("Is Hit", false);
-                tookDamage = false;
-                navMeshAgent.isStopped = false;
-            }
         }
-
-       
     }
 
     IEnumerator DamageTimer() {
-
-        yield return new WaitForSeconds(stunTime);
-}
+        if (health <= 0)
+        {
+            isDead = true;
+        }
+        else
+        {
+            animator.SetTrigger("HitDamage");
+            yield return new WaitForSeconds(stunTime);
+            //animator.SetBool("Is Hit", false);
+            tookDamage = false;
+            navMeshAgent.isStopped = false;
+        }
+    }
      
 }
