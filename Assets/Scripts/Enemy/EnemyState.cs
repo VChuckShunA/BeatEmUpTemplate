@@ -40,6 +40,8 @@ public class EnemyState : MonoBehaviour
     public float damageCount = 3;
     [SerializeField] public bool isDead = false;
     public GameObject retreatObject;
+
+    [SerializeField] float attackDelay = 1f;
     //Variables for the state machine
     public enum currentStateEnum { idle = 0, walk = 1, attack = 2, retreat=3,hurt=4,dead=5 };
     public currentStateEnum currentState;
@@ -88,6 +90,7 @@ public class EnemyState : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
        /* Debug.Log("Condition 1");
         Debug.Log(
         tookDamage == false);
@@ -208,7 +211,7 @@ public class EnemyState : MonoBehaviour
 
     IEnumerator AttackDelay()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(attackDelay);
         //stats.displayUI = false;
         animator.SetBool("Attack", true);
         Debug.Log("AttackDelay");
@@ -254,9 +257,20 @@ public class EnemyState : MonoBehaviour
         if (!isDead)
         {
             tookDamage = true;
-            navMeshAgent.isStopped = true;
             health -= damage;
-            StartCoroutine(DamageTimer());
+            //StartCoroutine(DamageTimer());
+            if (health <= 0)
+            {
+                isDead = true;
+            }
+            else
+            {
+                animator.SetTrigger("HitDamage");
+
+                //animator.SetBool("Is Hit", false);
+                tookDamage = false;
+                navMeshAgent.isStopped = false;
+            }
         }
     }
 
@@ -268,10 +282,13 @@ public class EnemyState : MonoBehaviour
         else
         {
             animator.SetTrigger("HitDamage");
+            animator.SetBool("Walk", false);
+            //navMeshAgent.isStopped = true;
             yield return new WaitForSeconds(stunTime);
             //animator.SetBool("Is Hit", false);
             tookDamage = false;
             navMeshAgent.isStopped = false;
+            canAttack = true;
         }
     }
      
