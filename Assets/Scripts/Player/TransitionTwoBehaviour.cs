@@ -7,13 +7,13 @@ public class TransitionTwoBehaviour : StateMachineBehaviour
 	// OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		Player.instance.canAttack = true;
-		Player.instance.canMove = true;
+		Player.instance.canMove = false;
 	}
 
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		if (Player.instance.attacked) {
 			animator.SetTrigger("Attack3");
-			Player.instance.InputManager();
+			//Player.instance.InputManager();
 			Player.instance.attacked = false;
 			Player.instance.canMove = false;
 		}

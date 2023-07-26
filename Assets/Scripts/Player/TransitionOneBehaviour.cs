@@ -8,7 +8,7 @@ public class TransitionOneBehaviour : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         Player.instance.canAttack = true;
-		Player.instance.canMove = true;
+		Player.instance.canMove = false;
 	}
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -16,7 +16,7 @@ public class TransitionOneBehaviour : StateMachineBehaviour
     {
 		if (Player.instance.attacked) {
 			animator.SetTrigger("Attack2");
-			Player.instance.InputManager();
+			//Player.instance.InputManager();
 			Player.instance.attacked = false;
 			Player.instance.canMove = false;
 		}

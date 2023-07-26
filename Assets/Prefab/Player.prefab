@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5204142596982835457}
   - component: {fileID: 2885121568369843874}
   - component: {fileID: 5086318288286244442}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AttackBox3
   m_TagString: Hitbox
   m_Icon: {fileID: 0}
@@ -69,6 +69,91 @@ MonoBehaviour:
   damage: 30
   buff: 0
   knockDownAttack: 0
+--- !u!1 &868701396073706137
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7531849053789020453}
+  - component: {fileID: 7349208137672280257}
+  m_Layer: 6
+  m_Name: Katana
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &7531849053789020453
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868701396073706137}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.411, y: -1.432, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7005393394210434827}
+  m_Father: {fileID: 4363021829228908180}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &7349208137672280257
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868701396073706137}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: f2d83c5df6b19aa408a98f7a6a8bfcc2, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 1
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 3, y: 3}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1093127321972547904
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,7 +168,8 @@ GameObject:
   - component: {fileID: 863293703135227045}
   - component: {fileID: 2011571444634503168}
   - component: {fileID: 7877513124906854106}
-  m_Layer: 0
+  - component: {fileID: 4526545566930522209}
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -108,6 +194,7 @@ Transform:
   - {fileID: 5204142596982835457}
   - {fileID: 2323637042565550279}
   - {fileID: 7434810192809786736}
+  - {fileID: 4363021829228908180}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -263,6 +350,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4526545566930522209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093127321972547904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f6791a9bbba9d34b8b3e799ce930e44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapons:
+  - {fileID: 868701396073706137}
 --- !u!1 &1962413699809549463
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,7 +376,7 @@ GameObject:
   - component: {fileID: 4301809875531626226}
   - component: {fileID: 5803951738825552304}
   - component: {fileID: 4232902468006177102}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AttackPointR
   m_TagString: AttackPoint
   m_Icon: {fileID: 0}
@@ -352,6 +453,38 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &2948832807327520252
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4363021829228908180}
+  m_Layer: 6
+  m_Name: WeaponAttachPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4363021829228908180
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2948832807327520252}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0163, y: 0.0207, z: 0}
+  m_LocalScale: {x: 0.1667, y: 0.1667, z: 0.1667}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7531849053789020453}
+  m_Father: {fileID: 176730628125271906}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3121085556818032713
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,7 +494,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6377867730661040134}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -383,6 +516,75 @@ Transform:
   m_Father: {fileID: 176730628125271906}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6233458788486320001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7005393394210434827}
+  - component: {fileID: 6814151121919707523}
+  - component: {fileID: 829688818705022041}
+  m_Layer: 6
+  m_Name: WeaponCollision
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &7005393394210434827
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6233458788486320001}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.671, y: 2.809, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7531849053789020453}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6814151121919707523
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6233458788486320001}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &829688818705022041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6233458788486320001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6501265018cbe3645a27dda285b78165, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 5
+  buff: 0
+  knockDownAttack: 0
 --- !u!1 &6290725127683832400
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,7 +596,7 @@ GameObject:
   - component: {fileID: 2332974426101937296}
   - component: {fileID: 9167743095509867784}
   - component: {fileID: 7222596767156366749}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AttackBox2
   m_TagString: Hitbox
   m_Icon: {fileID: 0}
@@ -463,7 +665,7 @@ GameObject:
   - component: {fileID: 1090921958577377526}
   - component: {fileID: 1271559298229550970}
   - component: {fileID: 5421640908681615903}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AttackBox1
   m_TagString: Hitbox
   m_Icon: {fileID: 0}
@@ -533,7 +735,7 @@ GameObject:
   - component: {fileID: 3886328805104357596}
   - component: {fileID: 3072222452590683742}
   - component: {fileID: 1184602715479406671}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AttackPointL
   m_TagString: AttackPoint
   m_Icon: {fileID: 0}

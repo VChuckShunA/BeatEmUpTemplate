@@ -83,8 +83,7 @@ public class Player : MonoBehaviour
 				canAttack = false;
 				attacked = true;
 			} else {
-
-				return;
+                return;
 			}
 		}
 	}

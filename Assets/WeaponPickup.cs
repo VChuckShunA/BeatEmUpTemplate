@@ -5,11 +5,14 @@ using UnityEngine;
 public class WeaponPickup : MonoBehaviour
 {
     public bool pickedUp;
-
+    public int index;
     [SerializeField]private GameObject weaponObject;
+
+    private SpriteRenderer spriteRenderer;
     // Start is called before the first frame update
     void Start()
     {
+        spriteRenderer=this.gameObject.GetComponentInParent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -25,7 +28,8 @@ public class WeaponPickup : MonoBehaviour
         {
             pickedUp=true;
             this.gameObject.transform.parent.SetParent(other.gameObject.transform.GetChild(6).transform.transform);
-            Debug.Log(other.gameObject.transform.GetChild(6));
+            spriteRenderer.enabled=false;
+            other.GetComponent<WeaponHolder>().EquipWeapon(index);
         }
     }
 }
