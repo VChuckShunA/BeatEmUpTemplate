@@ -475,7 +475,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1392652057}
-  m_LocalRotation: {x: -0, y: -0, z: -0.24465065, w: 0.9696113}
+  m_LocalRotation: {x: -0, y: -0, z: -0.24465068, w: 0.9696113}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -517,8 +517,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.4027712, y: 0.99020123, z: 1.4630303}
-  m_Center: {x: -2.9840982, y: 1.9947509, z: 0.12186074}
+  m_Size: {x: 3.4027703, y: 0.9902009, z: 0.6067437}
+  m_Center: {x: -2.9841652, y: 1.9947956, z: 0.015699208}
 --- !u!1 &1488761064
 GameObject:
   m_ObjectHideFlags: 0
@@ -666,7 +666,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1658958978}
   - component: {fileID: 1658958977}
-  - component: {fileID: 1658958979}
+  - component: {fileID: 1658958980}
+  - component: {fileID: 1658958981}
   m_Layer: 0
   m_Name: Katana
   m_TagString: Untagged
@@ -734,7 +735,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1658958975}
   m_LocalRotation: {x: -0, y: -0, z: 0.25029555, w: 0.96816957}
-  m_LocalPosition: {x: -10.72, y: -2.98, z: 0}
+  m_LocalPosition: {x: -12.64, y: -2.21, z: 1.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -742,7 +743,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 28.99}
---- !u!135 &1658958979
+--- !u!54 &1658958980
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658958975}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!135 &1658958981
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -755,14 +783,14 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.45
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.11
+  m_Center: {x: -1.8, y: 2.85, z: 0}
 --- !u!1 &2074564227
 GameObject:
   m_ObjectHideFlags: 0
@@ -925,14 +953,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
-    - target: {fileID: 6748727137862927139, guid: e4ece74e9af115947a929e9c3898cdf0, type: 3}
-      propertyPath: stunTime
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6748727137862927139, guid: e4ece74e9af115947a929e9c3898cdf0, type: 3}
-      propertyPath: attackDelay
-      value: 0.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -960,7 +980,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 176730628125271906, guid: 59df9118d9aac17429b196c5c9eb481d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.11
+      value: 2.89
       objectReference: {fileID: 0}
     - target: {fileID: 176730628125271906, guid: 59df9118d9aac17429b196c5c9eb481d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -988,6 +1008,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 176730628125271906, guid: 59df9118d9aac17429b196c5c9eb481d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 868701396073706137, guid: 59df9118d9aac17429b196c5c9eb481d, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1093127321972547904, guid: 59df9118d9aac17429b196c5c9eb481d, type: 3}

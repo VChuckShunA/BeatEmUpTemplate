@@ -195,6 +195,7 @@ Transform:
   - {fileID: 2323637042565550279}
   - {fileID: 7434810192809786736}
   - {fileID: 4363021829228908180}
+  - {fileID: 125873120792354836}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -327,8 +328,13 @@ MonoBehaviour:
   attacked: 0
   groundCheck: {fileID: 6377867730661040134}
   knockBackForce: 1
+  nearPickUp: 0
   knockedDown: 0
   knockedDownTime: 1
+  minHeight: 0.61
+  maxHeight: 4.71
+  canPickup: 0
+  weaponToPickUp: {fileID: 0}
 --- !u!95 &7877513124906854106
 Animator:
   serializedVersion: 5
@@ -364,6 +370,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapons:
   - {fileID: 868701396073706137}
+  weaponIndex: 0
+  currentWeapon: {fileID: 0}
+  weaponDeatchPoint: {fileID: 2799362332873554051}
+  hasWeapon: 0
 --- !u!1 &1962413699809549463
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,6 +463,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &2799362332873554051
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 125873120792354836}
+  m_Layer: 6
+  m_Name: WeaponDetachPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &125873120792354836
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2799362332873554051}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.45, y: -0.05, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 176730628125271906}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2948832807327520252
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,9 +22,12 @@ public class Player : MonoBehaviour
 	[SerializeField] public bool attacked = false;
 	[SerializeField] private Transform groundCheck; // Make sure that the Groundcheck object is slightly below the player (about -0.37)
     [SerializeField]public float knockBackForce;
+	public bool nearPickUp;
     public bool knockedDown;
-    public float knockedDownTime;
+    public float knockedDownTime, minHeight, maxHeight;
     private BoxCollider boxCollider;
+    [SerializeField] private bool canPickup=false;
+    [SerializeField] private GameObject weaponToPickUp;
 	private void Awake() {
 		instance = this;
 	}
@@ -79,24 +82,26 @@ public class Player : MonoBehaviour
 	}
 	private void Attack() {
 		if (Input.GetButtonDown("Fire1")) {
-			if (canAttack) {
-				canAttack = false;
-				attacked = true;
-			} else {
-                return;
+			if (canPickup)
+            {//TODO: Play Your Weapon Pickup Animation here
+                weaponToPickUp.GetComponent<WeaponPickup>().PickupWeapon(this.gameObject);
+                canAttack = true;
+				canPickup = false;
+                
 			}
-		}
+			else if (canAttack)
+			{
+                //canAttack = false;
+                anim.SetTrigger("Attack1");
+                //attacked = true;
+            }
+        }
 	}
 
-	public void InputManager() {
-		if (!canAttack) {
-			canAttack = true;
-		} else { 
-			canAttack=false;
-		}
-	}
-	private void Movement() {
-		if (!isDead) {
+
+	private void Movement()
+    {
+        if (!isDead) {
 			float h = Input.GetAxis("Horizontal");
 			float z = Input.GetAxis("Vertical");
 
@@ -120,11 +125,16 @@ public class Player : MonoBehaviour
 				jump = false;
 				rb.AddForce(Vector3.up * jumpForce);
 			}
+            float minWidth = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 10)).x;
+            float maxWidth = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 10)).x;
+            rb.position = new Vector3(Mathf.Clamp(rb.position.x, minWidth + 1, maxWidth - 1),
+                rb.position.y,
+                Mathf.Clamp(rb.position.z, minHeight, maxHeight));
 
-		}
-	}
+        }
+    }
 
-	private void Flip() {
+    private void Flip() {
 		facingRight = !facingRight;
 
 		Vector3 scale = transform.localScale;
@@ -190,5 +200,28 @@ public class Player : MonoBehaviour
 		canAttack = true;
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+		if (other.GetComponent<WeaponPickup>())
+        {
+            if (!other.GetComponent<WeaponPickup>().pickedUp)
+			{
+                canAttack = false;
+				canPickup = true;
+				weaponToPickUp = other.gameObject;
+                Debug.Log("Can pick up weapon");
+            }
+        }
+			
+    }
 
+	private void OnTriggerExit(Collider other)
+	{
+		if (other.GetComponent<WeaponPickup>())
+		{
+			canAttack = true;
+			canPickup = false;
+		}
+
+	}
 }

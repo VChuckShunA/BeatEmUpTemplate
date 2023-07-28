@@ -347,6 +347,7 @@ MonoBehaviour:
   damageCount: 3
   isDead: 0
   retreatObject: {fileID: 0}
+  attackDelay: 0.5
   currentState: 0
   wanderTarget: {x: 0, y: 0, z: 0}
   retreatPoint: {fileID: 2645424363164334588, guid: 0c012f851a5a0124886792d027b01001, type: 3}

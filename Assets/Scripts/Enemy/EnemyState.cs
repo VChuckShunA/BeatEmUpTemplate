@@ -90,22 +90,29 @@ public class EnemyState : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-       /* Debug.Log("Condition 1");
-        Debug.Log(
-        tookDamage == false);
-        Debug.Log("Condition 2");
-        Debug.Log(
-                enemySight.playerInSight == true);
-        Debug.Log("Condition 3");
-        Debug.Log(
-                damageCount != 0);
-        Debug.Log("Condition 4");
-        Debug.Log(
-                enemySight.targetDistance < enemAttack.attackRange);
-        Debug.Log("Condition 5");
-        Debug.Log(
-                navMeshAgent.velocity.sqrMagnitude < enemAttack.atackStartDelay);*/
+                      
+        Debug.Log(tookDamage == false);
+        Debug.Log(enemySight.playerInSight == true);
+        Debug.Log(damageCount > 0);
+        Debug.Log(enemySight.player.GetComponent<Player>().knockedDown == false);
+        Debug.Log(enemySight.targetDistance < enemAttack.attackRange);
+        Debug.Log(navMeshAgent.velocity.sqrMagnitude < enemAttack.atackStartDelay);
+        Debug.Log(enemySight.target);
+        /* Debug.Log("Condition 1");
+         Debug.Log(
+         tookDamage == false);
+         Debug.Log("Condition 2");
+         Debug.Log(
+                 enemySight.playerInSight == true);
+         Debug.Log("Condition 3");
+         Debug.Log(
+                 damageCount != 0);
+         Debug.Log("Condition 4");
+         Debug.Log(
+                 enemySight.targetDistance < enemAttack.attackRange);
+         Debug.Log("Condition 5");
+         Debug.Log(
+                 navMeshAgent.velocity.sqrMagnitude < enemAttack.atackStartDelay);*/
         if (!isDead)
         {
             //Get knocked down
@@ -150,6 +157,7 @@ public class EnemyState : MonoBehaviour
                 // stats.displayUI = false;
                 animator.SetBool("Walk", true);
                 animator.SetBool("Attack", false);
+                canAttack = true;
             }
             //transfer-back-to-idle-animation logic
             else if (tookDamage == false && enemySight.playerInSight == false)
@@ -216,8 +224,8 @@ public class EnemyState : MonoBehaviour
         animator.SetBool("Attack", true);
         Debug.Log("AttackDelay");
     }
-    
-   
+
+
     /// <summary>
     /// Knockdown Logic
     /// </summary>

@@ -100,4 +100,14 @@ public class EnemyWalk : MonoBehaviour
 		thisScale.x *= -1;
 		transform.localScale = thisScale;
 	}
+
+    public void ZeroSpeed()
+    {
+        navMeshAgent.speed = 0;
+    }
+
+	public void ResetSpeed()
+	{
+        navMeshAgent.speed = enemySpeed;
+    }
 }
