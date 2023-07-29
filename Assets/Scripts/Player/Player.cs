@@ -84,7 +84,7 @@ public class Player : MonoBehaviour
 		if (Input.GetButtonDown("Fire1")) {
 			if (canPickup)
             {//TODO: Play Your Weapon Pickup Animation here
-                weaponToPickUp.GetComponent<WeaponPickup>().PickupWeapon(this.gameObject);
+                weaponToPickUp.GetComponent<WeaponPickup>().PickupWeapon(this.gameObject,6);
                 canAttack = true;
 				canPickup = false;
                 
@@ -209,7 +209,6 @@ public class Player : MonoBehaviour
                 canAttack = false;
 				canPickup = true;
 				weaponToPickUp = other.gameObject;
-                Debug.Log("Can pick up weapon");
             }
         }
 			

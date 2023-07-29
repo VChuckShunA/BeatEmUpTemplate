@@ -31,22 +31,24 @@ public class EnemyState : MonoBehaviour
     public float knockDownTime;
     public static EnemyState instance;
 
-    //Booleans for retreat logic
+    //variables for retreat logic
 
     public bool isRetreating = false;
     public bool canSpawnRetreatPoint = true;
     public bool canAttack = true;
     public int retreatCounter = 0;
     public float damageCount = 3;
+    public bool canWalk = true;
     [SerializeField] public bool isDead = false;
     public GameObject retreatObject;
+    [SerializeField] private Vector3 wanderTarget;
+    [SerializeField] public GameObject retreatPoint;
 
+    //Attack variables
     [SerializeField] float attackDelay = 1f;
     //Variables for the state machine
     public enum currentStateEnum { idle = 0, walk = 1, attack = 2, retreat=3,hurt=4,dead=5 };
     public currentStateEnum currentState;
-    [SerializeField] private Vector3 wanderTarget;
-    [SerializeField] public GameObject retreatPoint; 
     private float wanderRadius = 8f; // Maximum distance from the player to wander
     //--Annimator State Variables------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     AnimatorStateInfo currentStateInfo;
@@ -90,29 +92,8 @@ public class EnemyState : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-                      
-        Debug.Log(tookDamage == false);
-        Debug.Log(enemySight.playerInSight == true);
-        Debug.Log(damageCount > 0);
-        Debug.Log(enemySight.player.GetComponent<Player>().knockedDown == false);
-        Debug.Log(enemySight.targetDistance < enemAttack.attackRange);
-        Debug.Log(navMeshAgent.velocity.sqrMagnitude < enemAttack.atackStartDelay);
-        Debug.Log(enemySight.target);
-        /* Debug.Log("Condition 1");
-         Debug.Log(
-         tookDamage == false);
-         Debug.Log("Condition 2");
-         Debug.Log(
-                 enemySight.playerInSight == true);
-         Debug.Log("Condition 3");
-         Debug.Log(
-                 damageCount != 0);
-         Debug.Log("Condition 4");
-         Debug.Log(
-                 enemySight.targetDistance < enemAttack.attackRange);
-         Debug.Log("Condition 5");
-         Debug.Log(
-                 navMeshAgent.velocity.sqrMagnitude < enemAttack.atackStartDelay);*/
+        
+        
         if (!isDead)
         {
             //Get knocked down
@@ -152,7 +133,8 @@ public class EnemyState : MonoBehaviour
             //walk-animation logic
             else if (knockedDown == false &&
                 tookDamage == false &&
-                enemySight.playerInSight == true)
+                enemySight.playerInSight == true &&
+                canWalk)
             {
                 // stats.displayUI = false;
                 animator.SetBool("Walk", true);
@@ -222,7 +204,6 @@ public class EnemyState : MonoBehaviour
         yield return new WaitForSeconds(attackDelay);
         //stats.displayUI = false;
         animator.SetBool("Attack", true);
-        Debug.Log("AttackDelay");
     }
 
 

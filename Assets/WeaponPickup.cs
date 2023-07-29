@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static EnemyState;
 
 public class WeaponPickup : MonoBehaviour
 {
@@ -22,20 +23,23 @@ public class WeaponPickup : MonoBehaviour
        
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Enemy")
-        { 
-            
+        {
+            if (other.GetComponent<EnemyState>().currentState == currentStateEnum.retreat)
+            {
+                PickupWeapon(other.gameObject,2);
+            }
         }
     }
 
-    public void PickupWeapon(GameObject holder) {
+    public void PickupWeapon(GameObject holder,int attachPointIndex) {
         pickedUp = true;
-        this.gameObject.transform.parent.SetParent(holder.gameObject.transform.GetChild(6).transform.transform);
+        this.gameObject.transform.parent.SetParent(holder.gameObject.transform.GetChild(attachPointIndex).transform.transform);
         spriteRenderer.enabled = false;
         holder.GetComponent<WeaponHolder>().EquipWeapon(index,this.gameObject);
-        this.gameObject.transform.parent.gameObject.SetActive(false);
+        //this.gameObject.transform.parent.gameObject.SetActive(false);
     }
 
     public void DropWeapon()

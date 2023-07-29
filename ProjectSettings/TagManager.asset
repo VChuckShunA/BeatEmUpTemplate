@@ -10,6 +10,7 @@ TagManager:
   - AttackPoint
   - RetreatCollider
   - RetreatPoint
+  - Weapon
   layers:
   - Default
   - TransparentFX

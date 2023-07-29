@@ -71,7 +71,7 @@ public class EnemyWalk : MonoBehaviour
 			Flip ();
 		} 
 
-		navMeshAgent.speed = enemySpeed; //Assign the enemy speed to the navmesh speed
+		//navMeshAgent.speed = enemySpeed; //Assign the enemy speed to the navmesh speed
 		enemyCurrentSpeed=navMeshAgent.velocity.sqrMagnitude;
 		if (enemySight.target)
 		{

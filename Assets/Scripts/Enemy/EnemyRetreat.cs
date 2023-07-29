@@ -12,6 +12,7 @@ public class EnemyRetreat : MonoBehaviour
     EnemySight enemySight;
     EnemyWalk enemyWalk;
     EnemyState enemeyState;
+    WeaponScanner weaponScanner;
 
     private void Awake()
     {
@@ -20,6 +21,7 @@ public class EnemyRetreat : MonoBehaviour
         enemySight = GetComponent<EnemySight>();
         enemyWalk = GetComponent<EnemyWalk>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+        weaponScanner= GetComponent<WeaponScanner>();
     }
 
     /// <summary>
@@ -33,24 +35,36 @@ public class EnemyRetreat : MonoBehaviour
     }
     private Vector3 GetRandomPointAroundPlayer(Vector3 center, float radius)
     {
-        Vector3 randomDirection = Random.insideUnitSphere * radius;
-        randomDirection.y = 0f;
-        Vector3 randomPoint = center + randomDirection;
-
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPoint, out hit, radius, NavMesh.AllAreas))
+        if (weaponScanner.closestWeapon)
         {
-            return hit.position;
+            //Return the location of the closest weapon. The location has been adjust here to account for the offset
+            Vector3 weaponPosition = weaponScanner.closestWeapon.transform.position - weaponScanner.closestWeapon.transform.GetChild(0).GetComponent<BoxCollider>().center;
+            return weaponPosition;
+            //return new Vector3 (weaponScanner.closestWeapon.transform.position.x - 2.984165f, weaponScanner.closestWeapon.transform.position.y + 1.994796f, weaponScanner.closestWeapon.transform.position.z+ 0.01569921f);
         }
+        else {
+            Vector3 randomDirection = Random.insideUnitSphere * radius;
+            randomDirection.y = 0f;
+            Vector3 randomPoint = center + randomDirection;
 
-        // If no valid position is found, return the original center position
-        return center;
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPoint, out hit, radius, NavMesh.AllAreas))
+            {
+                return hit.position;
+            }
+
+            // If no valid position is found, return the original center position
+            return center;
+        }
+        
     }
 
     IEnumerator Retreat()
     {
-        yield return new WaitForSeconds(0.5f);
         animator.SetBool("Walk", false);
+        enemeyState.canWalk = false;
+        yield return new WaitForSeconds(0.5f);
+        enemeyState.canWalk = true;
         wanderTarget = GetRandomPointAroundPlayer(enemySight.player.transform.position, wanderRadius);
         Collider[] colliders = Physics.OverlapSphere(wanderTarget, 3f); // Adjust the radius as needed
         foreach (Collider collider in colliders)
