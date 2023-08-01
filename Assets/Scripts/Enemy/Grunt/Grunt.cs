@@ -26,6 +26,8 @@ public class Grunt : MonoBehaviour
     private bool damaged = false;
     private float damageTimer;
     private float nextAttack;
+    private CapsuleCollider capsuleCollider;
+    private FlickerSprite flickerSprite;
 
     Stats stats;
     // Start is called before the first frame update
@@ -36,8 +38,9 @@ public class Grunt : MonoBehaviour
         groundCheck = transform.Find("GroundCheck");
         target = FindObjectOfType<Player>().transform;
         currentHealth = maxHealth;
-
         stats = GetComponent<Stats>();
+        flickerSprite=GetComponent<FlickerSprite>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
     }
 
     // Update is called once per frame
@@ -95,19 +98,11 @@ public class Grunt : MonoBehaviour
             if (!damaged)
                 rb.velocity = new Vector3(hForce * currentSpeed, 0, zForce * currentSpeed);
 
-            if (Mathf.Abs(currentSpeed) > 0)
-            {
-                anim.SetBool("Walk", true);
-            }
-            else
-            {
-                anim.SetBool("Walk", false);
-            }
-            //anim.SetFloat("Speed", Mathf.Abs(currentSpeed));
+            anim.SetFloat("Speed", Mathf.Abs(currentSpeed)); 
 
             if (Mathf.Abs(targetDitance.x) < 1.5f && Mathf.Abs(targetDitance.z) < 1.5f && Time.time > nextAttack)
             {
-                anim.SetTrigger("GruntAttack");
+                anim.SetTrigger("Attack");
                 currentSpeed = 0;
                 nextAttack = Time.time + attackRate;
             }
@@ -133,7 +128,16 @@ public class Grunt : MonoBehaviour
             {
                 isDead = true;
                 rb.AddRelativeForce(new Vector3(3, 5, 0), ForceMode.Impulse);
+
             }
+        }
+        else if (isDead)
+        {
+            anim.Play("Death");
+            rb.constraints = RigidbodyConstraints.FreezePosition;
+            capsuleCollider.enabled = false;
+            flickerSprite.StartFlickering();
+            stats.health = currentHealth;
         }
     }
 

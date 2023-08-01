@@ -38,10 +38,14 @@ public class FlickerSprite : MonoBehaviour
 		}
 
 		isFlickering = false;
-		if (enemyState.retreatObject)
-        {
-            Destroy(enemyState.retreatObject);
+		if (enemyState)
+		{
+            if (enemyState.retreatObject)
+            {
+                Destroy(enemyState.retreatObject);
+            }
         }
+		
 		Destroy(this.gameObject);
 	}
 }
