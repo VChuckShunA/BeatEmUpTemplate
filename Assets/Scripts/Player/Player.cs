@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
     private BoxCollider boxCollider;
     [SerializeField] private bool canPickup=false;
     [SerializeField] private GameObject weaponToPickUp;
+
+	Stats otherStats;
 	private void Awake() {
 		instance = this;
 	}
@@ -39,7 +41,7 @@ public class Player : MonoBehaviour
 		health = Mathf.Clamp(maxHealth,0,maxHealth);
         anim = GetComponent<Animator>();
 		rb = GetComponent<Rigidbody>();
-
+		otherStats=GetComponent<Stats>();
     }
 
     // Update is called once per frame
@@ -161,7 +163,7 @@ public class Player : MonoBehaviour
 				
 				}
 				anim.SetTrigger("Hurt");
-				//FindObjectOfType<UIManager>().UpdateHealth(health);
+				otherStats.health = health;
 			}
 			else if (health <= 0)
 			{

@@ -13,6 +13,7 @@ public class EnemySight : MonoBehaviour
 	public bool targetsAvailable;
 
 	private EnemyState enemyState;
+	private EnemyRetreat enemyRetreat;
 
 	//Variables to to check if the player is on the left or the right of the enemy
 	 Vector3 playerRelativePosition; //use to actually calculate left or right
@@ -30,6 +31,7 @@ public class EnemySight : MonoBehaviour
 	{
 		player = GameObject.FindGameObjectWithTag ("Player"); //Find Game object tagged as player
         enemyState=GetComponent<EnemyState> ();	
+		enemyRetreat = GetComponent<EnemyRetreat> ();	
         //Finding Front and Back Targets
         frontTarget =GameObject.Find("AttackPointR");
 		backTarget=GameObject.Find("AttackPointL");
@@ -83,6 +85,7 @@ public class EnemySight : MonoBehaviour
 		else {
 			target = null;
 			targetDistance = 0;
+            enemyRetreat.StartRetreating();
         }
 		
 

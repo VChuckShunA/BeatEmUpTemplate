@@ -169,6 +169,7 @@ GameObject:
   - component: {fileID: 2011571444634503168}
   - component: {fileID: 7877513124906854106}
   - component: {fileID: 4526545566930522209}
+  - component: {fileID: 1148023420768851183}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -374,6 +375,24 @@ MonoBehaviour:
   currentWeapon: {fileID: 0}
   weaponDeatchPoint: {fileID: 2799362332873554051}
   hasWeapon: 0
+--- !u!114 &1148023420768851183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093127321972547904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b214d1889a0d7e84c8186f89be248472, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingHealth: 100
+  health: 0
+  displayUI: 0
+  healthSlider: {fileID: 0}
+  healthUI: {fileID: 0}
+  enemyToWin: 0
 --- !u!1 &1962413699809549463
 GameObject:
   m_ObjectHideFlags: 0

@@ -38,9 +38,9 @@ public class EnemyRetreat : MonoBehaviour
         if (weaponScanner.closestWeapon)
         {
             //Return the location of the closest weapon. The location has been adjust here to account for the offset
-            Vector3 weaponPosition = weaponScanner.closestWeapon.transform.position - weaponScanner.closestWeapon.transform.GetChild(0).GetComponent<BoxCollider>().center;
-            return weaponPosition;
-            //return new Vector3 (weaponScanner.closestWeapon.transform.position.x - 2.984165f, weaponScanner.closestWeapon.transform.position.y + 1.994796f, weaponScanner.closestWeapon.transform.position.z+ 0.01569921f);
+            //Vector3 weaponPosition = weaponScanner.closestWeapon.transform.position - weaponScanner.closestWeapon.transform.GetChild(0).GetComponent<BoxCollider>().center;
+            //return weaponPosition;
+            return new Vector3 (weaponScanner.closestWeapon.transform.position.x - 2.984165f, weaponScanner.closestWeapon.transform.position.y + 1.994796f, weaponScanner.closestWeapon.transform.position.z+ 0.01569921f);
         }
         else {
             Vector3 randomDirection = Random.insideUnitSphere * radius;

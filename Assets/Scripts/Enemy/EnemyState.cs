@@ -79,7 +79,7 @@ public class EnemyState : MonoBehaviour
         boxCollider = GetComponent<BoxCollider>();
         rb = GetComponent<Rigidbody>();
         FlickerSprite flickerSprite = GetComponent<FlickerSprite>();
-        //stats = GetComponent<Stats>();
+        stats = GetComponent<Stats>();
 
     }
 
@@ -99,15 +99,14 @@ public class EnemyState : MonoBehaviour
             //Get knocked down
             if (knockedDown == true && tookDamage == false)
             {
-                // stats.displayUI = true;
+                stats.displayUI = true;
                 animator.SetBool("Knocked Down", true);
                 StartCoroutine(KnockedDown());
             }
             //take Damange
             else if (tookDamage == true)
             {
-                //stats.displayUI = true;
-                //stats.displayUI = true;
+                stats.displayUI = true;
             }
             //attack logic
             else if (tookDamage == false &&
@@ -136,7 +135,7 @@ public class EnemyState : MonoBehaviour
                 enemySight.playerInSight == true &&
                 canWalk)
             {
-                // stats.displayUI = false;
+                 stats.displayUI = false;
                 animator.SetBool("Walk", true);
                 animator.SetBool("Attack", false);
                 canAttack = true;
@@ -144,7 +143,7 @@ public class EnemyState : MonoBehaviour
             //transfer-back-to-idle-animation logic
             else if (tookDamage == false && enemySight.playerInSight == false)
             {
-                //stats.displayUI = false;
+                stats.displayUI = false;
                 animator.SetBool("Walk", false);
                 animator.SetBool("Attack", false);
             }
@@ -158,7 +157,7 @@ public class EnemyState : MonoBehaviour
             rb.constraints = RigidbodyConstraints.FreezePosition;
             boxCollider.enabled = false;
             flickerSprite.StartFlickering();
-            //FindObjectOfType<UIManager>().UpdateHealth(health);
+            stats.health = health;
         }
 
 
@@ -202,7 +201,7 @@ public class EnemyState : MonoBehaviour
     IEnumerator AttackDelay()
     {
         yield return new WaitForSeconds(attackDelay);
-        //stats.displayUI = false;
+        stats.displayUI = false;
         animator.SetBool("Attack", true);
     }
 
@@ -245,6 +244,8 @@ public class EnemyState : MonoBehaviour
     {
         if (!isDead)
         {
+            stats.displayUI = true;
+            stats.health = health;
             tookDamage = true;
             health -= damage;
             //StartCoroutine(DamageTimer());

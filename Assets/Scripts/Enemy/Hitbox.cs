@@ -12,14 +12,22 @@ public class Hitbox : MonoBehaviour
     {
         if (other.tag == "RetreatCollider")
         {
-            if (knockDownAttack)
+            if (this.gameObject.transform.parent.tag != "Enemy")
             {
-                other.GetComponentInParent<EnemyState>().knockedDown = true;
+                if (knockDownAttack)
+                {
+                    other.GetComponentInParent<EnemyState>().knockedDown = true;
+                }
+                else
+                {
+                    other.GetComponentInParent<EnemyState>().TookDamage(damage + buff);
+                }
             }
-            else
-            {
-                other.GetComponentInParent<EnemyState>().TookDamage(damage + buff);
-            }
+            
+        }
+        if (other.GetComponent<Grunt>())
+        {
+            other.GetComponent<Grunt>().TookDamage(damage+buff);
         }
         if (other.tag == "Player")
         {

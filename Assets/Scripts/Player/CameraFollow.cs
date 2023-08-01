@@ -10,8 +10,9 @@ public class CameraFollow : MonoBehaviour {
 	public float ySmooth = 8f; // How smoothly the camera catches up with it's target movement in the y axis.
 	public Vector2 maxXAndY; // The maximum x and y coordinates the camera can have.
 	public Vector2 minXAndY; // The minimum x and y coordinates the camera can have.
-
-	[SerializeField] private Transform m_Player; // Reference to the player's transform.
+    public static bool isFollowing=true; // Made this static so it can be accessed from any script like this --> CameraController.isFollower=true;
+    public bool zoomed;
+    [SerializeField] private Transform m_Player; // Reference to the player's transform.
 
 
 	private void Awake()
@@ -37,11 +38,19 @@ public class CameraFollow : MonoBehaviour {
 
 	private void Update()
 	{
-		TrackPlayer();
-	}
+        if (isFollowing == true)
+        {
+            TrackPlayer();
+        }
+        if (zoomed == true)
+            this.GetComponent<Camera>().orthographicSize = 2f;
+        if (zoomed == false)
+            this.GetComponent<Camera>().orthographicSize = 5;
+     
+    }
 
 
-	private void TrackPlayer()
+    private void TrackPlayer()
 	{
 		// By default the target x and y coordinates of the camera are it's current x and y coordinates.
 		float targetX = transform.position.x;

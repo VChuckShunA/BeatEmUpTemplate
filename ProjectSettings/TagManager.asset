@@ -11,6 +11,10 @@ TagManager:
   - RetreatCollider
   - RetreatPoint
   - Weapon
+  - PlayerHealthUI
+  - EnemyHealthUI
+  - Camera_Midpoint
+  - EnemySpawnTrigger
   layers:
   - Default
   - TransparentFX

@@ -25,11 +25,11 @@ public class WeaponPickup : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Enemy")
+        if (other.tag == "RetreatCollider")
         {
-            if (other.GetComponent<EnemyState>().currentState == currentStateEnum.retreat)
+            if (other.GetComponentInParent<EnemyState>().currentState == currentStateEnum.retreat)
             {
-                PickupWeapon(other.gameObject,2);
+                PickupWeapon(other.gameObject.transform.parent.gameObject,2);
             }
         }
     }
