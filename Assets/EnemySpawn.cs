@@ -8,12 +8,14 @@ public class EnemySpawn : MonoBehaviour
     public GameObject[] enemy;
     public int numberOfEnemies;
     public float spawnTime;
+    public GameObject leftBorder, rightBorder;
 
     private int currentEnemies;
     // Start is called before the first frame update
     void Start()
     {
-        
+        leftBorder = transform.Find("LeftBoundary").gameObject;
+        rightBorder = transform.Find("LeftBoundary").gameObject;
     }
 
     // Update is called once per frame
@@ -24,6 +26,7 @@ public class EnemySpawn : MonoBehaviour
             int enemies = FindObjectsOfType<Grunt>().Length + FindObjectsOfType<Enemy>().Length;
             if (enemies <= 0)
             {
+                CameraFollow.isFollowing = true;
                 gameObject.SetActive(false);
             }
         }
@@ -54,8 +57,9 @@ public class EnemySpawn : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GetComponent<BoxCollider>().enabled = false;
-            FindObjectOfType<CameraFollow>().maxXAndY.x = transform.position.x;
+
+            CameraFollow.isFollowing = false;
+            //FindObjectOfType<CameraFollow>().maxXAndY.x = transform.position.x;
             SpawnEnemy();
         }
     }
