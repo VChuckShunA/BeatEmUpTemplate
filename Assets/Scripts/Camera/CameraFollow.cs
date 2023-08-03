@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour {
-
+	/// <summary>
+	/// This script controls the camera
+	/// </summary>
 	public float xMargin = 1f; // Distance in the x axis the player can move before the camera follows.CHANGE THIS to free player movement
 	//public float yMargin = 1f; // Distance in the y axis the player can move before the camera follows.
 	public float xSmooth = 8f; // How smoothly the camera catches up with it's target movement in the x axis.
@@ -38,10 +40,13 @@ public class CameraFollow : MonoBehaviour {
 
 	private void Update()
 	{
+		//Tracking player
         if (isFollowing == true)
         {
             TrackPlayer();
         }
+
+		//Zoome
         if (zoomed == true)
             this.GetComponent<Camera>().orthographicSize = 2f;
         if (zoomed == false)

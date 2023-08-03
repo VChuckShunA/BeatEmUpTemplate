@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+	/// <summary>
+	/// This script controls the player
+	/// This script requires the Weapon Holder Script to hold Weapons
+	/// This script requires the Stat Script to update the UI
+	/// This script requires the Attack point script for the Enemy Retreat Script to work
+	/// </summary>
 	public static Player instance;
     [SerializeField] float walkSpeed=5.0f;
     [SerializeField] float runSpeed=8.0f;
@@ -47,20 +53,25 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		
+		//Alternate GroundCheck
 		//onGround = Physics.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
 
+		//Updating the animator
 		anim.SetBool("OnGround", onGround);
 		anim.SetBool("Dead", isDead);
 
+		//Jump Input
 		if (Input.GetButtonDown("Jump") && onGround) {
 			jump = true;
 		}
 
+		//Calling Attack
 		Attack();
 
+		//Calling Movement
 		Movement();
 
+		//knockdown logic
         if (knockedDown == true)
             StartCoroutine(KnockedDown());
 
@@ -82,8 +93,10 @@ public class Player : MonoBehaviour
 			canMove=false;
 		}
 	}
+	//Attack & Weapon Pickup logic
 	private void Attack() {
 		if (Input.GetButtonDown("Fire1")) {
+			//Weapon Pickup logic
 			if (canPickup)
             {//TODO: Play Your Weapon Pickup Animation here
                 weaponToPickUp.GetComponent<WeaponPickup>().PickupWeapon(this.gameObject,6);
@@ -91,31 +104,35 @@ public class Player : MonoBehaviour
 				canPickup = false;
                 
 			}
+			//Attack Logic
 			else if (canAttack)
 			{
-                //canAttack = false;
                 anim.SetTrigger("Attack1");
-                //attacked = true;
             }
         }
 	}
 
 
+	//Movement Logic
 	private void Movement()
     {
         if (!isDead) {
+			//Taking Input
 			float h = Input.GetAxis("Horizontal");
 			float z = Input.GetAxis("Vertical");
 
+			//Ground Check
 			if (!onGround) {
 				z = 0;
 			}
+			//Movement
 			if (canMove) { rb.velocity = new Vector3(h * speed, rb.velocity.y, z * speed); }
 
+			//Updating  animator
 			if (onGround) {
 				anim.SetFloat("Speed", Mathf.Abs(rb.velocity.magnitude));
 			}
-
+			//Flipping the sprite
 			if (canMove) { 
 				if (h > 0 && !facingRight) {
 				Flip();
@@ -123,10 +140,12 @@ public class Player : MonoBehaviour
 				Flip();
 			}
 			}
+			//Jump Logic
 			if (jump) {
 				jump = false;
 				rb.AddForce(Vector3.up * jumpForce);
 			}
+			//Camping movement
             float minWidth = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 10)).x;
             float maxWidth = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 10)).x;
             rb.position = new Vector3(Mathf.Clamp(rb.position.x, minWidth + 1, maxWidth - 1),
@@ -136,6 +155,7 @@ public class Player : MonoBehaviour
         }
     }
 
+	//Flipping Sprites
     private void Flip() {
 		facingRight = !facingRight;
 
@@ -145,25 +165,31 @@ public class Player : MonoBehaviour
 
 	}
 
+	//This functions are called as animation events
+	//Stop movement while attacking
 	private void ZeroSpeed() {
 		speed = 0;
 	}
 
-	private void ResetSpeed() {
+    //This functions are called as animation events
+    //Reset Speed
+    private void ResetSpeed() {
 		speed = walkSpeed;
 	}
 
+	//Take Damage
 	public void TookDamage(float damage) {
-		if (!isDead && knockedDown == false) {
-            health -= damage;
-			if (health > 0)
+		if (!isDead && knockedDown == false) { //Player can only take damage if they're NOT dead and NOT knocked down
+			health -= damage;//Redact health
+            if (health > 0)
 			{
 				if (knockedDown)
-				{ 
-				
-				}
-				anim.SetTrigger("Hurt");
-				otherStats.health = health;
+				{
+					//Calling Knockdown
+                    StartCoroutine(KnockedDown());
+                }
+				anim.SetTrigger("Hurt"); //Hurt Animation
+				otherStats.health = health; //Updating the UI
 			}
 			else if (health <= 0)
 			{
@@ -173,6 +199,7 @@ public class Player : MonoBehaviour
         }
 	}
 
+	//Knockdown Function
     public IEnumerator KnockedDown()
     {
         health -= 30;
@@ -184,19 +211,15 @@ public class Player : MonoBehaviour
 		if (facingRight == false)
 		{
 			rb.AddForce(transform.right * knockBackForce); //applying a force through the inspector
-			Debug.Log("applied force");
 		}
 		else if (facingRight == true)
 		{
             rb.AddForce(transform.right * (-1 * knockBackForce));// appying a force of through the inspector
-
-            Debug.Log("applied force");
         }
 		
         yield return new WaitForSeconds(knockedDownTime); //waiting for two seconds as specified through the inspector
 
         anim.SetBool("Knocked Down", false);
-        //animator.Play ("Blaze Idle"); //skipping animator control and returning to idle
         canMove = true; //allowing the player to flip
         knockedDown = false;
 		canAttack = true;
@@ -204,6 +227,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+		//Weapon Pickup Logic
 		if (other.GetComponent<WeaponPickup>())
         {
             if (!other.GetComponent<WeaponPickup>().pickedUp)
@@ -218,6 +242,7 @@ public class Player : MonoBehaviour
 
 	private void OnTriggerExit(Collider other)
 	{
+		//Disable Weapon Pickup
 		if (other.GetComponent<WeaponPickup>())
 		{
 			canAttack = true;

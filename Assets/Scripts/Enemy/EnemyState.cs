@@ -9,6 +9,11 @@ using UnityEngine.AI;
 
 public class EnemyState : MonoBehaviour
 {
+/// <summary>
+/// This is the Enemy state
+/// This script controls all of the enemy behaviour
+/// The script uses the animator to switch between states
+/// </summary>
     public GameObject spriteObject;
     public UnityEngine.AI.NavMeshAgent navMeshAgent;
     EnemySight enemySight;
@@ -50,7 +55,7 @@ public class EnemyState : MonoBehaviour
     public enum currentStateEnum { idle = 0, walk = 1, attack = 2, retreat=3,hurt=4,dead=5 };
     public currentStateEnum currentState;
     private float wanderRadius = 8f; // Maximum distance from the player to wander
-    //--Annimator State Variables------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    //--Annimator State Variables
     AnimatorStateInfo currentStateInfo;
     static int currentAnimationState;
     static int idleState = Animator.StringToHash("Base Layer.Idle");
@@ -74,19 +79,11 @@ public class EnemyState : MonoBehaviour
         enemyRetreat = GetComponent<EnemyRetreat>();
         animator = spriteObject.GetComponent<Animator>();
         instance=this;
-
         health = Mathf.Clamp(maxHealth, 0, maxHealth);
         boxCollider = GetComponent<BoxCollider>();
         rb = GetComponent<Rigidbody>();
         FlickerSprite flickerSprite = GetComponent<FlickerSprite>();
         stats = GetComponent<Stats>();
-
-    }
-
-    // Use this for initialization
-    void Start()
-    {
-       
     }
 
     // Update is called once per frame
@@ -119,6 +116,7 @@ public class EnemyState : MonoBehaviour
             {
                 if (canAttack)
                 {
+                    //Attacking
                     canAttack = false;
                     animator.SetBool("Walk", false);
                     StartCoroutine(AttackDelay());
@@ -150,9 +148,9 @@ public class EnemyState : MonoBehaviour
         }
         else
         {
+            //return to idle
             navMeshAgent.ResetPath();
             animator.SetBool("Walk",false);
-            // animator.SetBool("Dead", true);
             animator.Play("Death");
             rb.constraints = RigidbodyConstraints.FreezePosition;
             boxCollider.enabled = false;
@@ -162,7 +160,7 @@ public class EnemyState : MonoBehaviour
 
 
         //State machine logic
-        if (damageCount == 0)
+        if (damageCount == 0)//Retreat when the damageCount reaches 0
         {
             currentState = currentStateEnum.retreat;
         }
@@ -198,6 +196,7 @@ public class EnemyState : MonoBehaviour
 
     }
 
+    //Waiting before attacking
     IEnumerator AttackDelay()
     {
         yield return new WaitForSeconds(attackDelay);
@@ -236,34 +235,37 @@ public class EnemyState : MonoBehaviour
     ///Damnage Logic <summary>
     /// Damnage Logic
 
-    public void DecrementDamageCounter()
+    public void DecrementDamageCounter() //This script is called as an animation event
     {
         damageCount--;
     }
+
+    //Taking Damage
     public void TookDamage(float damage)
     {
         if (!isDead)
         {
+            //Updating UI when damaged
             stats.displayUI = true;
             stats.health = health;
             tookDamage = true;
             health -= damage;
-            //StartCoroutine(DamageTimer());
             if (health <= 0)
             {
+                //Enemy Death
                 isDead = true;
             }
             else
             {
+                //damage animations
                 animator.SetTrigger("HitDamage");
-
-                //animator.SetBool("Is Hit", false);
                 tookDamage = false;
                 navMeshAgent.isStopped = false;
             }
         }
     }
 
+    //waiting before retreating
     IEnumerator DamageTimer() {
         if (health <= 0)
         {
@@ -273,9 +275,7 @@ public class EnemyState : MonoBehaviour
         {
             animator.SetTrigger("HitDamage");
             animator.SetBool("Walk", false);
-            //navMeshAgent.isStopped = true;
             yield return new WaitForSeconds(stunTime);
-            //animator.SetBool("Is Hit", false);
             tookDamage = false;
             navMeshAgent.isStopped = false;
             canAttack = true;

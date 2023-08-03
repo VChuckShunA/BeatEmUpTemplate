@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class Grunt : MonoBehaviour
 {
+    /// <summary>
+    /// This is the Script for the basic enemy AI, known as Grunt
+    /// Grunt uses the GruntAttack script to attack the player when in Range
+    /// Grunt uses the Stats scripts to store its health and update the UI
+    /// </summary>
     public float maxSpeed;
     public float minHeight, maxHeight;
     public float damageTime = 0.5f;
@@ -26,11 +31,9 @@ public class Grunt : MonoBehaviour
     private bool damaged = false;
     private float damageTimer;
     private float nextAttack;
-    private CapsuleCollider capsuleCollider;
     private FlickerSprite flickerSprite;
 
     Stats stats;
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -40,7 +43,6 @@ public class Grunt : MonoBehaviour
         currentHealth = maxHealth;
         stats = GetComponent<Stats>();
         flickerSprite=GetComponent<FlickerSprite>();
-        capsuleCollider = GetComponent<CapsuleCollider>();
     }
 
     // Update is called once per frame
@@ -52,6 +54,7 @@ public class Grunt : MonoBehaviour
 
         if (!isDead)
         {
+            //Turning left and right
             facingRight = (target.position.x < transform.position.x) ? false : true;
             if (facingRight)
             {
@@ -64,6 +67,7 @@ public class Grunt : MonoBehaviour
         }
 
 
+        //Retreat logic
         if (damaged && !isDead)
         {
             damageTimer += Time.deltaTime;
@@ -79,8 +83,10 @@ public class Grunt : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Chase and Attack Logic
         if (!isDead)
         {
+            //Chase Logic
             Vector3 targetDitance = target.position - transform.position;
             float hForce = targetDitance.x / Mathf.Abs(targetDitance.x);
 
@@ -100,6 +106,7 @@ public class Grunt : MonoBehaviour
 
             anim.SetFloat("Speed", Mathf.Abs(currentSpeed)); 
 
+            //Attack Logic
             if (Mathf.Abs(targetDitance.x) < 1.5f && Mathf.Abs(targetDitance.z) < 1.5f && Time.time > nextAttack)
             {
                 anim.SetTrigger("Attack");
@@ -108,6 +115,7 @@ public class Grunt : MonoBehaviour
             }
         }
 
+        //Clamping the movement to prevent the enemy from going out of bounds
         rb.position = new Vector3
             (
                 rb.position.x,
@@ -115,8 +123,10 @@ public class Grunt : MonoBehaviour
                 Mathf.Clamp(rb.position.z, minHeight, maxHeight));
     }
 
+    //Take Damage & Death Logic
     public void TookDamage(float damage)
     {
+        // Take Damage Logic
         if (!isDead)
         {
             damaged = true;
@@ -127,15 +137,14 @@ public class Grunt : MonoBehaviour
             if (currentHealth <= 0)
             {
                 isDead = true;
-                rb.AddRelativeForce(new Vector3(3, 5, 0), ForceMode.Impulse);
+                rb.AddRelativeForce(new Vector3(3, 5, 0), ForceMode.Impulse); //Adding knockback force
 
             }
         }
+        //Death Logic
         else if (isDead)
         {
             anim.Play("Death");
-            rb.constraints = RigidbodyConstraints.FreezePosition;
-            capsuleCollider.enabled = false;
             flickerSprite.StartFlickering();
             stats.health = currentHealth;
         }

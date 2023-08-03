@@ -4,27 +4,21 @@ using UnityEngine;
 
 public class GruntAttack : MonoBehaviour
 {
+    /// <summary>
+    /// This script handles attack collisions for Grunt
+    /// </summary>
     public int damage;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+ 
     private void OnTriggerEnter(Collider other)
     {
         Grunt enemy = other.GetComponent<Grunt>();
         Player player = other.GetComponent<Player>();
+        //Friendly fire
         if (enemy != null)
         {
             enemy.TookDamage(damage);
         }
-
+        //Damaging player
         if (player != null)
         {
             player.TookDamage(damage);

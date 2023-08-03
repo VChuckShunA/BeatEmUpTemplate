@@ -5,25 +5,26 @@ using UnityEngine;
 
 public class WeaponHolder : MonoBehaviour
 {
+    /// <summary>
+    /// This script is used by the player and the enemy to hold weapons
+    /// </summary>
     [SerializeField] public GameObject[] weapons;
     [SerializeField] private int weaponIndex;
     [SerializeField] public GameObject currentWeapon;
     [SerializeField] private GameObject weaponDeatchPoint;
     [SerializeField] private bool hasWeapon;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
+   
     // Update is called once per frame
     void Update()
     {
+        //Dropping weapons
         if (Input.GetButtonDown("Fire2"))
         { 
             DropWeapon();
         }
     }
+
+    //Equipping Weapons
     public void EquipWeapon(int index,GameObject weapon)
     {
         weapons[index].gameObject.SetActive(true);
@@ -33,7 +34,7 @@ public class WeaponHolder : MonoBehaviour
     }
 
 
-
+    //Dropping weapons
     public void DropWeapon() {
         if (hasWeapon)
         {
@@ -42,7 +43,6 @@ public class WeaponHolder : MonoBehaviour
             weapons[weaponIndex].gameObject.SetActive(false);
             currentWeapon.gameObject.SetActive(true);
             currentWeapon.gameObject.transform.parent.position = dropPosition;
-            //currentWeapon.gameObject.transform.rotation = dropRotation;
             currentWeapon.GetComponent<WeaponPickup>().DropWeapon();
             hasWeapon = false;
         }

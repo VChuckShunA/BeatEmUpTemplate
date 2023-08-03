@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class EnemySight : MonoBehaviour 
 {
+/// <summary>
+/// This script handles our advanced enemy's sight logic
+/// </summary>
 	public bool playerInSight; //Check if the player is in sight
 	public bool playerOnRight; //boolean to trigger left or right 
 	public GameObject target; // Game objec to identify the the target
@@ -41,6 +44,7 @@ public class EnemySight : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		//Logic for checking if the attack points are available
         if (!frontTarget.GetComponent<AttackPoint>().available && !backTarget.GetComponent<AttackPoint>().available)
 		{
 			targetsAvailable = false;
@@ -63,10 +67,11 @@ public class EnemySight : MonoBehaviour
 		//Calculating target position
 		distanceToFrontTarget=Vector3.Distance(frontTarget.transform.position,gameObject.transform.position);
 		distanceToBackTarget=Vector3.Distance(backTarget.transform.position,gameObject.transform.position);
-		//compare distances
+		
 		if (targetsAvailable)
-		{
-			if (distanceToFrontTarget < distanceToBackTarget && frontTarget.GetComponent<AttackPoint>().available)
+        {
+			//compare distances
+            if (distanceToFrontTarget < distanceToBackTarget && frontTarget.GetComponent<AttackPoint>().available)
 			{
 				target = frontTarget;
 
@@ -83,6 +88,7 @@ public class EnemySight : MonoBehaviour
 
 		}
 		else {
+			//Start retreating if there are no targets
 			target = null;
 			targetDistance = 0;
             enemyRetreat.StartRetreating();

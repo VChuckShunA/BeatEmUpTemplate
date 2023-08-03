@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class EnemyWalk : MonoBehaviour 
 {
+	/// <summary>
+	/// This script handles the enemy walk logic when the enemy is moving towards the player
+	/// </summary>
 	//accesing states
 	EnemyState enemeyState;
 	//Enemy Speed variables
@@ -41,29 +44,21 @@ public class EnemyWalk : MonoBehaviour
 		if (enemeyState.currentState == EnemyState.currentStateEnum.walk) {
 			if (!enemeyState.isDead && !enemeyState.tookDamage)
 			{
-                Walk();
+                Walk(); //Calling the walk function
             }
 		}
 		else if (enemeyState.currentState == EnemyState.currentStateEnum.idle) {
 			//Stop ();
 		}
-		/*if (enemySight.playerInSight == true) 
-		{ // The the player is in sight
-			animator.SetBool ("Walk", true); //walk animation
-
-			if (enemySight.targetDistance < .1f) { //check if the player is 1 unity away
-				animator.SetBool ("Walk", false);//stop the animation
-			}
-		} else if (enemySight.playerInSight != true) 
-		{
-			animator.SetBool ("Walk",false);//stop the animation
-		}*/
+	
 
 		
 	}
 
+	//Walking towards the player
 	void Walk()
 	{
+		//Flipping the sprites
 		if (enemySight.playerOnRight == true && facingRight == true) {
 			Flip ();
 		} else if (enemySight.playerOnRight == false && !facingRight) 
@@ -71,9 +66,8 @@ public class EnemyWalk : MonoBehaviour
 			Flip ();
 		} 
 
-		//navMeshAgent.speed = enemySpeed; //Assign the enemy speed to the navmesh speed
 		enemyCurrentSpeed=navMeshAgent.velocity.sqrMagnitude;
-		if (enemySight.target)
+		if (enemySight.target) // Checking if the enemy sight Script has detected the target
 		{
 
             navMeshAgent.SetDestination(enemySight.target.transform.position); // Move to the player's location
@@ -87,7 +81,7 @@ public class EnemyWalk : MonoBehaviour
 		navMeshAgent.ResetPath ();
 	}
 
-	public void Flip() //--Code for flipping the sprite------------------------------------------------------------------------------------------------------------------------------------------
+	public void Flip() //--Code for flipping the sprite
 	{
 		//Alternative Flip code. Comment out facingRight value to initialize this
 		//*WARNING! : This code affects the hit box.*
@@ -101,12 +95,14 @@ public class EnemyWalk : MonoBehaviour
 		transform.localScale = thisScale;
 	}
 
+	//This function is called as an animation Event
     public void ZeroSpeed()
     {
         navMeshAgent.speed = 0;
     }
 
-	public void ResetSpeed()
+    //This function is called as an animation Event
+    public void ResetSpeed()
 	{
         navMeshAgent.speed = enemySpeed;
     }

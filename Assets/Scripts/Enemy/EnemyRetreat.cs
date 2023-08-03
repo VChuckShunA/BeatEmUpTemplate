@@ -25,7 +25,7 @@ public class EnemyRetreat : MonoBehaviour
     }
 
     /// <summary>
-    /// Retreat Logic
+    /// This script handles the Enemy retreat logic
     /// </summary>
     public void StartRetreating()
     {
@@ -33,13 +33,13 @@ public class EnemyRetreat : MonoBehaviour
         enemeyState.isRetreating = true;
         StartCoroutine(Retreat());
     }
+
+    //This function generates a random point around the player for the enemy to retreat to
     private Vector3 GetRandomPointAroundPlayer(Vector3 center, float radius)
     {
         if (weaponScanner.closestWeapon)
         {
             //Return the location of the closest weapon. The location has been adjust here to account for the offset
-            //Vector3 weaponPosition = weaponScanner.closestWeapon.transform.position - weaponScanner.closestWeapon.transform.GetChild(0).GetComponent<BoxCollider>().center;
-            //return weaponPosition;
             return new Vector3 (weaponScanner.closestWeapon.transform.position.x - 2.984165f, weaponScanner.closestWeapon.transform.position.y + 1.994796f, weaponScanner.closestWeapon.transform.position.z+ 0.01569921f);
         }
         else {
@@ -48,7 +48,7 @@ public class EnemyRetreat : MonoBehaviour
             Vector3 randomPoint = center + randomDirection;
 
             NavMeshHit hit;
-            if (NavMesh.SamplePosition(randomPoint, out hit, radius, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(randomPoint, out hit, radius, NavMesh.AllAreas)) //ensures that the position is within the navmesh
             {
                 return hit.position;
             }
@@ -78,20 +78,25 @@ public class EnemyRetreat : MonoBehaviour
         Walk(wanderTarget);
     }
 
+    /// <summary>
+    /// This function is simmilar to the walk function in Enemy walk
+    /// The enemy walks towards the retreat point
+    /// </summary>
+    /// <param name="wanderTarget"></param>
     void Walk(Vector3 wanderTarget)
     {
-        if (enemeyState.canSpawnRetreatPoint)
+        if (enemeyState.canSpawnRetreatPoint) // Spawning retreat point
         {
             enemeyState.retreatObject = Instantiate(enemeyState.retreatPoint, new(wanderTarget.x, -2, wanderTarget.z), Quaternion.identity);
             enemeyState.canSpawnRetreatPoint = false;
         }
         if (enemySight.playerOnRight == true && enemyWalk.facingRight == true)
         {
-            enemyWalk.Flip();
+            enemyWalk.Flip(); //Flipping sprite
         }
         else if (enemySight.playerOnRight == false && !enemyWalk.facingRight)
         {
-            enemyWalk.Flip();
+            enemyWalk.Flip(); //Flipping sprite
         }
         navMeshAgent.speed = enemyWalk.enemySpeed; //Assign the enemy speed to the navmesh speed
         enemyWalk.enemyCurrentSpeed = navMeshAgent.velocity.sqrMagnitude;

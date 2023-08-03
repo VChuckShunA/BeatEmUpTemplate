@@ -5,6 +5,9 @@ using static EnemyState;
 
 public class WeaponPickup : MonoBehaviour
 {
+    /// <summary>
+    /// This script allows weapons to be picked up and held by both the player and the enemy
+    /// </summary>
     public bool pickedUp;
     public int index;
     [SerializeField]private GameObject weaponObject;
@@ -17,31 +20,30 @@ public class WeaponPickup : MonoBehaviour
         initialRotation=this.gameObject.transform.rotation;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-       
-    }
+  
 
     private void OnTriggerStay(Collider other)
     {
+        //Uses the enemy's retreat collider to  check if the enemy has collided with the weapon
         if (other.tag == "RetreatCollider")
         {
-            if (other.GetComponentInParent<EnemyState>().currentState == currentStateEnum.retreat)
+            if (other.GetComponentInParent<EnemyState>().currentState == currentStateEnum.retreat) //Checks if the enemy is retreating. The enemy can only pickup weapons when retreating
             {
+                //Picking up weapons
                 PickupWeapon(other.gameObject.transform.parent.gameObject,2);
             }
         }
     }
 
+    //Picking up weapon
     public void PickupWeapon(GameObject holder,int attachPointIndex) {
         pickedUp = true;
-        this.gameObject.transform.parent.SetParent(holder.gameObject.transform.GetChild(attachPointIndex).transform.transform);
-        spriteRenderer.enabled = false;
-        holder.GetComponent<WeaponHolder>().EquipWeapon(index,this.gameObject);
-        //this.gameObject.transform.parent.gameObject.SetActive(false);
+        this.gameObject.transform.parent.SetParent(holder.gameObject.transform.GetChild(attachPointIndex).transform.transform);//This assigns the weapon to the Enemy/Player's and attachpoint
+        spriteRenderer.enabled = false; //disables the sprite
+        holder.GetComponent<WeaponHolder>().EquipWeapon(index,this.gameObject); //Equips Weapon
     }
 
+    //Dropping Weapon
     public void DropWeapon()
     {
         this.gameObject.transform.parent.gameObject.SetActive(true);

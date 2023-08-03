@@ -4,26 +4,23 @@ using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
 {
-    public float maxZ, minZ;
+    /// <summary>
+    /// This script handles the enemy spawn system
+    /// </summary>
+    public float maxZ, minZ; // the  boundaries from which the enemies will spawn
     public GameObject[] enemy;
     public int numberOfEnemies;
     public float spawnTime;
-    public GameObject leftBorder, rightBorder;
 
     private int currentEnemies;
-    // Start is called before the first frame update
-    void Start()
-    {
-        leftBorder = transform.Find("LeftBoundary").gameObject;
-        rightBorder = transform.Find("LeftBoundary").gameObject;
-    }
 
-    // Update is called once per frame
     void Update()
     {
+        //if all the spawn enemies have been defeated, the camera will start following the player again
         if (currentEnemies >= numberOfEnemies)
         {
-            int enemies = FindObjectsOfType<Grunt>().Length + FindObjectsOfType<Enemy>().Length;
+            int enemies = FindObjectsOfType<Grunt>().Length;
+            Debug.Log(enemies);
             if (enemies <= 0)
             {
                 CameraFollow.isFollowing = true;
@@ -32,6 +29,7 @@ public class EnemySpawn : MonoBehaviour
         }
     }
 
+    //Enemy spawn logic
     void SpawnEnemy()
     {
         bool positionX = Random.Range(0, 2) == 0 ? true : false;
@@ -55,11 +53,11 @@ public class EnemySpawn : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //Spawn enemies if the player collides with this object
         if (other.CompareTag("Player"))
         {
 
             CameraFollow.isFollowing = false;
-            //FindObjectOfType<CameraFollow>().maxXAndY.x = transform.position.x;
             SpawnEnemy();
         }
     }

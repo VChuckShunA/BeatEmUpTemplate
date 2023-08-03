@@ -6,14 +6,13 @@ using static UnityEngine.GraphicsBuffer;
 
 public class WeaponScanner : MonoBehaviour
 {
+    /// <summary>
+    /// This script is used by the Enemy AI to scan for the weapons in the game
+    /// </summary>
     [SerializeField] private List<GameObject> weaponsInRange;
     [SerializeField] public GameObject closestWeapon;
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
+    
 
-    // Update is called once per frame
     void Update()
     {
         //Update Weapons in Range
@@ -21,6 +20,8 @@ public class WeaponScanner : MonoBehaviour
         //get the distance to the closest weapon and assign that to closestWeapon
         float minDistance = float.MaxValue;
         closestWeapon = null;
+
+        //Choosing the closest weapon from all the available weapons
         foreach (GameObject weapon in weaponsInRange)
         {
             float distance = Vector3.Distance(weapon.transform.position, transform.position);
@@ -30,6 +31,7 @@ public class WeaponScanner : MonoBehaviour
                 closestWeapon = weapon;
             }
         }
+        //removing the closest weapons
         if (weaponsInRange.Count == 0)
         { 
             closestWeapon = null;
@@ -38,6 +40,7 @@ public class WeaponScanner : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        //Adding Weapons to the weaponsInRage list
         if (other.tag == "Weapon")
         {
             //Add to weapons in Range

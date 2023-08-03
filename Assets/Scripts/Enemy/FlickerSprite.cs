@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class FlickerSprite : MonoBehaviour
 {
+	/// <summary>
+	/// This Script handles the flickering effect seen in traditional 2.5D beat em up games
+	/// </summary>
 	public float flickerDuration = 0.1f; // Time in seconds for each flicker interval
 	public float flickerDelay = 0.5f; // Time in seconds between flicker intervals
 	public float waitTime = 1.0f; // Time to wait before flickering
@@ -19,6 +22,7 @@ public class FlickerSprite : MonoBehaviour
 
     }
 
+	//Public function to call the Flickering effect
 	public void StartFlickering() {
 		if (!isFlickering) {
 			isFlickering = true;
@@ -26,7 +30,7 @@ public class FlickerSprite : MonoBehaviour
 		}
 
 	}
-
+	//Flickering coroutine
 	private IEnumerator FlickerCoroutine() {
 
 		yield return new WaitForSeconds(waitTime);
@@ -38,6 +42,7 @@ public class FlickerSprite : MonoBehaviour
 		}
 
 		isFlickering = false;
+		//Destroying the retreat point
 		if (enemyState)
 		{
             if (enemyState.retreatObject)
@@ -46,6 +51,6 @@ public class FlickerSprite : MonoBehaviour
             }
         }
 		
-		Destroy(this.gameObject);
+		Destroy(this.gameObject); //Destroying the enemy object
 	}
 }
