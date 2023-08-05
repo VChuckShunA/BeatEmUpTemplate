@@ -19,7 +19,7 @@ public class EnemySpawn : MonoBehaviour
         //if all the spawn enemies have been defeated, the camera will start following the player again
         if (currentEnemies >= numberOfEnemies)
         {
-            int enemies = FindObjectsOfType<Grunt>().Length;
+            int enemies = FindObjectsOfType<Grunt>().Length+ FindObjectsOfType<EnemyState>().Length;
             Debug.Log(enemies);
             if (enemies <= 0)
             {

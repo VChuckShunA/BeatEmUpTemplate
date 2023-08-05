@@ -150,7 +150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 27930}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 35.61, y: 0, z: 0}
+  m_LocalPosition: {x: 42.89, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -172,8 +172,8 @@ MonoBehaviour:
   maxZ: 4.6
   minZ: 0.6
   enemy:
-  - {fileID: 1295145831197081527, guid: 4a209895b71e95c478e0f1672b688aca, type: 3}
-  numberOfEnemies: 3
+  - {fileID: 2234482769056384808, guid: 043ddf80b6bb3b7448ea8d043c170e8c, type: 3}
+  numberOfEnemies: 1
   spawnTime: 1
 --- !u!65 &27933
 BoxCollider:
@@ -481,6 +481,10 @@ PrefabInstance:
     - target: {fileID: 2258920594919369316, guid: e4ece74e9af115947a929e9c3898cdf0, type: 3}
       propertyPath: m_Name
       value: Enemy (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2258920594919369316, guid: e4ece74e9af115947a929e9c3898cdf0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1460,8 +1464,8 @@ MonoBehaviour:
   maxZ: 4.6
   minZ: 0.6
   enemy:
-  - {fileID: 1295145831197081527, guid: 4a209895b71e95c478e0f1672b688aca, type: 3}
-  numberOfEnemies: 3
+  - {fileID: 2258920594919369316, guid: e4ece74e9af115947a929e9c3898cdf0, type: 3}
+  numberOfEnemies: 2
   spawnTime: 1
 --- !u!65 &175869113
 BoxCollider:
